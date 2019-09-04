@@ -27,8 +27,8 @@ export default function Auth(props) {
       })
       .then(response => {
         // Handle success.
-        //console.log("User profile", response.data.user);
-        //console.log("User token", response.data.jwt);
+        console.log("User profile", response.data.user);
+        console.log("User token", response.data.jwt);
         user = { ...user, token: response.data.jwt, id: response.data.user.id };
         console.log(user);
       })
