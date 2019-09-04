@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import "./App.css";
+import "semantic-ui-css/semantic.min.css";
 
 //APP CONTEXT
 import { DataProvider } from "./context/DataContext";
@@ -10,36 +9,32 @@ import Auth from "./components/auth";
 import Barman from "./components/barman";
 import Client from "./components/client";
 
-//ROUTE
-
 function App() {
   //STATE
-  const [user, setUser] = useState({ username: "", password: "", id: "" });
+  const [user, setUser] = useState({ username: "", password: "", id: "", token: "" });
   const [islog, setIslog] = useState(false);
-  console.log(setUser, setIslog);
 
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          <DataProvider>
-            <Route exact path="/">
-              <Auth
-                value={{
-                  user: user => {
-                    setUser(user);
-                  },
-                  Islog: key => {
-                    setIslog(key);
-                  }
-                }}
-              ></Auth>
-            </Route>
-            <Route path="/barman" component={Barman}></Route>
-            <Route path="/client" component={Client}></Route>
-          </DataProvider>
-        </Switch>
-      </Router>
+      {/*si je ne suis pas log, j'affiche le panneau de connexion */}
+      {islog != true ? (
+        <Auth setUser={setUser} setIslog={setIslog}></Auth>
+      ) : (
+        <DataProvider
+          value={{
+            user: user,
+            resetUser: setUser,
+            islog: islog,
+            changeLog: setIslog
+          }}
+        >
+          {" "}
+          {/*si je suis barman -> id=2 et que je suis log j'affiche le panneau barman */}
+          {user.id === 2 && islog === true ? <Barman /> : false}
+          {/*si je ne suis pas barman -> id !=2 MAIS que je suis log j'affiche le panneau client */}
+          {user.id != 2 && islog === true ? <Client /> : false}
+        </DataProvider>
+      )}
     </div>
   );
 }

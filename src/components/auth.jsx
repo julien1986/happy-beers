@@ -1,49 +1,50 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+//SEMANTIC UI
+import { Input } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
+
 export default function Auth(props) {
-  console.log(props);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  let user = {};
-  let key = "";
-
-  function HandleUser(ev) {
+  //CATCH INPUT
+  const HandleUser = ev => {
     //console.log(ev.currentTarget.value);
-    user = { ...user, username: ev.currentTarget.value };
-  }
+    setUsername(ev.currentTarget.value);
+  };
 
-  function HandlePassword(ev) {
+  const HandlePassword = ev => {
     //console.log(ev.currentTarget.value);
-    user = { ...user, password: ev.currentTarget.value };
-  }
+    setPassword(ev.currentTarget.value);
+  };
 
-  function connect(ev) {
+  //AXIOS POST
+  const connect = ev => {
     ev.preventDefault();
-    //console.log(user);
     axios
       .post("http://localhost:8080/auth/local", {
-        identifier: user.username,
-        password: user.password
+        identifier: username,
+        password: password
       })
       .then(response => {
-        // Handle success.
-        console.log("User profile", response.data.user);
-        console.log("User token", response.data.jwt);
-        user = { ...user, token: response.data.jwt, id: response.data.user.id };
-        console.log(user);
+        //console.log("User profile", response.data.user);
+        //console.log("User token", response.data.jwt);
+        props.setUser({ username: username, id: response.data.user.id, token: response.data.jwt });
+        props.setIslog(true);
       })
       .catch(error => {
-        // Handle error.
         console.log("An error occurred:", error);
       });
-  }
+  };
 
   return (
     <form>
       <label htmlFor="user">Username</label>
-      <input name="user" type="text" onChange={HandleUser}></input>
-      <label htmlFor="user">Mot de passe</label>
-      <input type="password" onChange={HandlePassword}></input>
+      <Input name="user" type="text" onChange={HandleUser} />
+      <label htmlFor="password">Mot de passe</label>
+      <Input type="password" onChange={HandlePassword} />
       <button onClick={connect}>Connect</button>
     </form>
   );

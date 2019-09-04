@@ -1,6 +1,12 @@
 import React, { useContext } from "react";
-import DataContext, { DataConsumer } from "../context/DataContext";
+
+//APP CONTEXT
+import DataContext from "../context/DataContext";
 
 export default function Barman() {
-  return <h1>Je suis barman</h1>;
+  const { user } = useContext(DataContext);
+
+  console.log(DataContext);
+
+  return <h1>Bonjour {user.username}</h1>;
 }
