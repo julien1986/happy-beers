@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { HashRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 //IMPORT COMPONENT
 import Bieres from "./bieres";

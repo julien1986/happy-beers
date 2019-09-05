@@ -23,6 +23,7 @@ export default function Auth(props) {
   //AXIOS POST
   const connect = ev => {
     ev.preventDefault();
+
     axios
       .post("http://localhost:8080/auth/local", {
         identifier: username,

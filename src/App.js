@@ -17,8 +17,8 @@ function App() {
   return (
     <div className="App">
       {/*si je ne suis pas log, j'affiche le panneau de connexion */}
-      {islog != true ? (
-        <Auth setUser={setUser} setIslog={setIslog}></Auth>
+      {islog !== true ? (
+        <Auth setUser={setUser} setIslog={setIslog}></Auth> /*SINON je fais*/
       ) : (
         <DataProvider
           value={{
@@ -32,7 +32,7 @@ function App() {
           {/*si je suis barman -> id=2 et que je suis log j'affiche le panneau barman */}
           {user.id === 2 && islog === true ? <Barman /> : false}
           {/*si je ne suis pas barman -> id !=2 MAIS que je suis log j'affiche le panneau client */}
-          {user.id != 2 && islog === true ? <Client /> : false}
+          {user.id !== 2 && islog === true ? <Client /> : false}
         </DataProvider>
       )}
     </div>
