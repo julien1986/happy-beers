@@ -8,15 +8,15 @@ import { List, Segment, Input, Button } from "semantic-ui-react";
 export default function Bieres() {
   const { user } = useContext(DataContext);
   const [listBeers, setListBeers] = useState([]);
-  const [total, setTotal] = useState([]);
-  const token = user.token;
+  const [orders, setOrders] = useState([]);
+  const urlPost = "http://localhost:8080/commandes";
 
-  //AXIOS REQUEST
+  //AXIOS REQUEST GET BEER
   useEffect(() => {
     axios
       .get("http://localhost:8080/products", {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${user.token}`
         }
       })
       .then(response => {
@@ -28,11 +28,24 @@ export default function Bieres() {
       });
   }, []);
 
-  console.log(total);
   //DOIT VÉRIFIER CHAQUE ENTRÉE DANS LE CHAMP...
   const HandleChange = (beer, ev) => {
     checkStock(ev.currentTarget.value, beer.stock);
-    setTotal([...total, { id: beer.id, quantite: ev.currentTarget.value }]);
+    const nombre = ev.currentTarget.value;
+    let found = false;
+    const newOrder = orders.map(order => {
+      if (order.id === beer.id) {
+        found = true;
+        return { ...order, quantity: nombre };
+      } else {
+        return order;
+      }
+    });
+    if (!found) {
+      setOrders([...orders, { id: beer.id, quantity: nombre }]);
+    } else {
+      setOrders(newOrder);
+    }
   };
   //...ET VÉRIFIER QUE C'EST DISPONIBLE DANS LE STOCK
   const checkStock = (nombre, currentstock) => {
@@ -41,9 +54,32 @@ export default function Bieres() {
     }
   };
 
-  //DOIT ENVOYER LA COMMANDE DANS LA DB
-  const HandleCommand = () => {};
+  //DOIT ENVOYER LA COMMANDE DANS LA DB => AXIOS REQUEST POST BEER
+  async function HandleCommand(url, orders) {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    };
+    const order = {
+      id_user: "id_users",
+      liste: orders,
+      done: false,
+      user: {
+        id: user.id
+      }
+    };
+    try {
+      const response = await axios.post(url, order, options);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    //reset le state après que la requête soit effectuée
+    setOrders([]);
+  }
 
+  console.log(orders);
   return (
     <Segment inverted>
       <List divided inverted relaxed>
@@ -62,7 +98,12 @@ export default function Bieres() {
           </List.Item>
         ))}
       </List>
-      <Button primary onChange={HandleCommand}>
+      <Button
+        primary
+        onClick={() => {
+          HandleCommand(urlPost, orders);
+        }}
+      >
         Valider la commande
       </Button>
     </Segment>
