@@ -10,7 +10,7 @@ import DataContext from "../context/DataContext";
 export default function QRreader(props) {
   const { user } = useContext(DataContext);
   const [customers, setCustomers] = useState();
-  const [getQR, setQR] = useState();
+  const [getQR, setQR] = useState({ resultat: "" });
 
   //AXIOS REQUEST GET USERS
   useEffect(() => {
@@ -34,6 +34,7 @@ export default function QRreader(props) {
   };
   const handleScan = data => {
     if (data) {
+      console.log(data);
       setQR({ resultat: data });
     }
   };
@@ -42,16 +43,9 @@ export default function QRreader(props) {
     <Card>
       <Segment>
         <Button content="scanner un code" onClick={HandleQR} />
-        <QrReader
-          delay={300}
-          onError={handleError}
-          onScan={() => {
-            handleScan();
-          }}
-          style={{ width: "100%" }}
-        />
+        <QrReader delay={300} onError={handleError} onScan={handleScan} style={{ width: "100%" }} />
       </Segment>
-      <h2>RESULTAT: {getQR}</h2>
+      <h2>RESULTAT: {getQR.resultat}</h2>
     </Card>
   );
 }
