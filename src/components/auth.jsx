@@ -30,9 +30,9 @@ export default function Auth(props) {
         password: password
       })
       .then(response => {
-        //console.log("User profile", response.data.user);
-        //console.log("User token", response.data.jwt);
-        props.setUser({ username: username, id: response.data.user.id, token: response.data.jwt });
+        console.log("User profile", response.data.user);
+        console.log("User token", response.data.jwt);
+        props.setUser({ username: username, id: response.data.user.id, token: response.data.jwt, cagnote: response.data.user.cagnote });
         props.setIslog(true);
       })
       .catch(error => {

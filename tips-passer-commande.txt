@@ -1,0 +1,31 @@
+// Logique pour ajouter une commande
+const HandleAddOrder = item => {
+    // on copie order(sate) dans un tableau temporaire
+    const temporder = [...order];
+    // on recherche l'index de la bière à ajouter dans les commandes
+    const existingindex = temporder.findIndex(order_item => order_item.id === item.id);
+    // Si la biere a déja été commandée
+    if (existingindex > -1) {
+    // on incrémente la quantité
+      temporder[existingindex].quantity++;
+    } else {
+    // Si la bière n'a pas déjà été ajoutée au commandes...
+    // On la rajoute !    
+      temporder.push({ id: item.id, quantity: 1 });
+    }
+    // On remonte le nouveau state des commandes
+    setOrder(temporder);
+  };
+
+// Logique pour enlever une commande
+  const HandleRemoveOrder = item => {
+    const temporder = [...order];
+    const existingindex = temporder.findIndex(order_item => order_item.id === item.id);
+    if (existingindex === -1) return;
+    if (temporder[existingindex].quantity > 1) {
+      temporder[existingindex].quantity--;
+    } else {
+      temporder.splice(existingindex, 1);
+    }
+    setOrder(temporder);
+  };

@@ -7,7 +7,6 @@ import CodeQR from "./codeQR";
 
 //SEMANTIC UI
 import { Menu } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
 
 //APP CONTEXT
 import DataContext from "../context/DataContext";
@@ -23,7 +22,6 @@ export default function Client() {
   return (
     <>
       <h1>Bonjour {user.username}</h1>
-      <h2>Que voulez-vous faire?</h2>
       <Router>
         <Menu>
           <Menu.Item name="bieres">

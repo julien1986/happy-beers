@@ -31,3 +31,7 @@
     transform: rotate(360deg);
   }
 }
+
+.QRClient {
+  margin: 0 auto;
+}

@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
+
+//CONTEXT
 import DataContext from "../context/DataContext";
 
 //SEMANTIC UI
@@ -31,6 +33,7 @@ export default function Bieres() {
   //DOIT VÉRIFIER CHAQUE ENTRÉE DANS LE CHAMP...
   const HandleChange = (beer, ev) => {
     checkStock(ev.currentTarget.value, beer.stock);
+    //AJOUTE LA LISTE DES BIÈRES À LA COMMANDE, SI ON MODIFIE LE NOMBRE DE BIÈRE DÉSIRÉ, BOUCLE SUR L'ARRAY, TROUVE LA VALEUR EXISTANTE ET LA MODIFIE
     const nombre = ev.currentTarget.value;
     let found = false;
     const newOrder = orders.map(order => {
@@ -54,7 +57,7 @@ export default function Bieres() {
     }
   };
 
-  //DOIT ENVOYER LA COMMANDE DANS LA DB => AXIOS REQUEST POST BEER
+  //AXIOS REQUEST POST BEER
   async function HandleCommand(url, orders) {
     const options = {
       headers: {
@@ -62,7 +65,7 @@ export default function Bieres() {
       }
     };
     const order = {
-      id_user: "id_users",
+      id_user: user.id,
       liste: orders,
       done: false,
       user: {
@@ -71,9 +74,9 @@ export default function Bieres() {
     };
     try {
       const response = await axios.post(url, order, options);
-      console.log(response);
+      //console.log(response);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     //reset le state après que la requête soit effectuée
     setOrders([]);
