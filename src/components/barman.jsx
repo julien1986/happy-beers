@@ -3,8 +3,9 @@ import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 //IMPORT COMPONENT
 import Commande from "./commande";
-import ScanQR from "./scanqr";
+import Stock from "./stock";
 import AddUser from "./adduser";
+import AddCurrency from "./addcurrency";
 
 //SEMANTIC UI
 import { Menu } from "semantic-ui-react";
@@ -26,13 +27,16 @@ export default function Barman() {
       <Router>
         <Menu>
           <Menu.Item name="Commande">
-            <Link to="/Commande">Voir le stock</Link>
+            <Link to="/Commande">Voir la liste de commande</Link>
           </Menu.Item>
-          <Menu.Item name="codeQR">
-            <Link to="/ScanQR">prendre une commande</Link>
+          <Menu.Item name="Stock">
+            <Link to="/Stock">Voir le stock</Link>
           </Menu.Item>
           <Menu.Item name="AddUser">
             <Link to="/AddUser">Ajouter un nouvel utilisateur</Link>
+          </Menu.Item>
+          <Menu.Item name="AddCurrency">
+            <Link to="/AddCurrency">Ajouter de l'argent</Link>
           </Menu.Item>
           <Menu.Item name="Auth">
             <Link to="/" onClick={HandleDisconnect}>
@@ -44,11 +48,14 @@ export default function Barman() {
           <Route exact path="/Commande">
             <Commande />
           </Route>
-          <Route exact path="/ScanQR">
-            <ScanQR />
+          <Route exact path="/Stock">
+            <Stock />
           </Route>
           <Route exact path="/AddUser">
             <AddUser />
+          </Route>
+          <Route exact path="/AddCurrency">
+            <AddCurrency />
           </Route>
         </Switch>
       </Router>

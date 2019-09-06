@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
+import uid from "uid";
 
 //CONTEXT
 import DataContext from "../context/DataContext";
@@ -47,7 +48,7 @@ export default function Bieres() {
     if (!found) {
       setOrders([...orders, { id: beer.id, quantity: nombre }]);
     } else {
-      setOrders(newOrder);
+      setOrders([newOrder]);
     }
   };
   //...ET VÉRIFIER QUE C'EST DISPONIBLE DANS LE STOCK
@@ -65,12 +66,12 @@ export default function Bieres() {
       }
     };
     const order = {
-      id_user: user.id,
       liste: orders,
       done: false,
       user: {
         id: user.id
-      }
+      },
+      num_commande: uid(4)
     };
     try {
       const response = await axios.post(url, order, options);
